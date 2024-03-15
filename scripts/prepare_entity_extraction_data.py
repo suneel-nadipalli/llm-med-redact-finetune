@@ -28,8 +28,8 @@ def prepare(
     test_split_fraction: float = 0.05,  # to get 10% test split
     seed: int = 42,
     mask_inputs: bool = False,  # as in alpaca-lora
-    data_file_name: str = "entity-extraction-train-data.json",
-    data_file_url: str = "https://raw.githubusercontent.com/architkaila/Entity-Extraction-with-LLMs/main/data/entity_extraction/entity-extraction-train-data.json",
+    data_file_name: str = "textToTagsV3.json",
+    # data_file_url: str = "https://raw.githubusercontent.com/architkaila/Entity-Extraction-with-LLMs/main/data/entity_extraction/entity-extraction-train-data.json",
     ignore_index: int = -1,
     max_seq_length: Optional[int] = None,
 ) -> None:
@@ -46,7 +46,7 @@ def prepare(
     destination_path.mkdir(parents=True, exist_ok=True)
     data_file_path = destination_path / data_file_name
     print("Loading data file...")
-    download_if_missing(data_file_path, data_file_url)
+    # download_if_missing(data_file_path, data_file_url)
     with open(data_file_path, "r", encoding="utf-8") as file:
         data = json.load(file)
 
@@ -73,7 +73,7 @@ def prepare(
         )
         for sample in tqdm(train_set)
     ]
-    torch.save(train_set, destination_path / "train.pt")
+    torch.save(train_set, destination_path / "train_red.pt")
 
     print("Processing test split ...")
     test_set = [
@@ -86,7 +86,7 @@ def prepare(
         )
         for sample in tqdm(test_set)
     ]
-    torch.save(test_set, destination_path / "test.pt")
+    torch.save(test_set, destination_path / "test_red.pt")
 
 
 def download_if_missing(file_path: Path, file_url: str) -> None:
